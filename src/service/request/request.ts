@@ -97,35 +97,56 @@ class CZMRequest {
     )
   }
 
-  request(config: CZMRequestConfig): void {
-    // 1.单个请求对请求config的处理
-    if (config.interceptors?.requestInterceptor) {
-      config = config.interceptors.requestInterceptor(config)
-    }
+  request<T>(config: CZMRequestConfig<T>): Promise<T> {
+    return new Promise((resolve, reject) => {
+      // 1.单个请求对请求config的处理
+      if (config.interceptors?.requestInterceptor) {
+        config = config.interceptors.requestInterceptor(config)
+      }
 
-    // 2.判断是否需要显示loading
-    if (config.showLoading === false) {
-      this.showLoading = config.showLoading
-    }
+      // 2.判断是否需要显示loading
+      if (config.showLoading === false) {
+        this.showLoading = config.showLoading
+      }
 
-    this.instance
-      .request(config)
-      .then((res) => {
-        // 1.单个请求对res数据的处理
-        if (config.interceptors?.responseInterceptor) {
-          res = config.interceptors.responseInterceptor(res)
-        }
+      this.instance
+        .request<any, T>(config)
+        .then((res) => {
+          // 1.单个请求对res数据的处理
+          if (config.interceptors?.responseInterceptor) {
+            // res = config.interceptors.responseInterceptor(res)
+          }
 
-        // 2.将showLoading设置true, 这样不会影响下一个请求
-        this.showLoading = DEFAULT_LOADING
+          // 2.将showLoading设置true, 这样不会影响下一个请求
+          this.showLoading = DEFAULT_LOADING
 
-        console.log(res)
-      })
-      .catch((err) => {
-        // 错误也要将showLoading设置true, 这样不会影响下一个请求
-        this.showLoading = DEFAULT_LOADING
-        return err
-      })
+          // 3.将结果通过resolve返回出去
+          resolve(res)
+        })
+        .catch((err) => {
+          // 错误也要将showLoading设置true, 这样不会影响下一个请求
+          this.showLoading = DEFAULT_LOADING
+
+          reject(err)
+          return err
+        })
+    })
+  }
+
+  get<T>(config: CZMRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: 'GET' })
+  }
+
+  post<T>(config: CZMRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: 'POST' })
+  }
+
+  delete<T>(config: CZMRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: 'DELETE' })
+  }
+
+  patch<T>(config: CZMRequestConfig<T>): Promise<T> {
+    return this.request<T>({ ...config, method: 'PATCH' })
   }
 }
 

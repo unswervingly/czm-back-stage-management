@@ -47,9 +47,21 @@ console.log(process.env.VUE_APP_BASE_NAME)
 //   }
 // })
 
-czmRequest.request({
-  url: '/home/multidata',
-  method: 'GET'
-  // 是否显示Loading,默认是有Loading
-  // showLoading: false
-})
+interface DataType {
+  data: any
+  returnCode: string
+  success: boolean
+}
+
+czmRequest
+  .request<DataType>({
+    url: '/home/multidata',
+    method: 'GET'
+    // 是否显示Loading,默认是有Loading
+    // showLoading: false
+  })
+  .then((res) => {
+    console.log(res.data)
+    console.log(res.returnCode)
+    console.log(res.success)
+  })
