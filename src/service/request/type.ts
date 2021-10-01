@@ -9,4 +9,5 @@ export interface CZMRequestInterceptors {
 
 export interface CZMRequestConfig extends AxiosRequestConfig {
   interceptors?: CZMRequestInterceptors
+  showLoading?: boolean
 }

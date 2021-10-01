@@ -28,25 +28,28 @@ app.use(router)
 // app.use(ElementPlus)
 app.mount('#app')
 
+// 方式三 区分环境变量
 console.log(process.env.VUE_APP_BASE_URL)
 console.log(process.env.VUE_APP_BASE_NAME)
 
-czmRequest.request({
-  url: '/home/multidata',
-  method: 'GET',
-  interceptors: {
-    requestInterceptor: (config) => {
-      console.log('单独请求config')
-      return config
-    },
-    responseInterceptor: (res) => {
-      console.log('单独响应的response')
-      return res
-    }
-  }
-})
-
 // czmRequest.request({
 //   url: '/home/multidata',
-//   method: 'GET'
+//   method: 'GET',
+//   interceptors: {
+//     requestInterceptor: (config) => {
+//       console.log('单独请求config')
+//       return config
+//     },
+//     responseInterceptor: (res) => {
+//       console.log('单独响应的response')
+//       return res
+//     }
+//   }
 // })
+
+czmRequest.request({
+  url: '/home/multidata',
+  method: 'GET'
+  // 是否显示Loading,默认是有Loading
+  // showLoading: false
+})
