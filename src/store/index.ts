@@ -1,12 +1,33 @@
 import { createStore } from 'vuex'
 
-export default createStore({
+// 导入login的 模块
+import loginModule from './login/login'
+
+// 根 store 的类型定义
+import { IRootState } from './type'
+
+/* interface IRootState {
+  name: string
+  age: number
+} */
+
+const store = createStore<IRootState>({
   state: () => {
     return {
-      name: 'czm'
+      name: 'czm',
+      age: 18
     }
   },
   mutations: {},
   actions: {},
-  modules: {}
+  modules: {
+    login: loginModule
+  }
 })
+
+// 防止页面刷新，store直接清除了
+export function setupStore() {
+  store.dispatch('login/loadLocalLogin')
+}
+
+export default store

@@ -1,10 +1,16 @@
 import { createApp } from 'vue'
 
-// element-plus 全局引入
+// 让不同的浏览器在渲染网页元素的时候形式更统一。
+import 'normalize.css'
+import './assets/css/index.less'
+// 1.element-plus 全局引入
 // import ElementPlus from 'element-plus'
+// 引入全局element plus icon
+// import { Edit } from '@element-plus/icons'
+// 引入全局样式
 import 'element-plus/dist/index.css'
 
-// element-plus 局部引入
+// 2.element-plus 局部引入
 import { globalRegister } from './global'
 
 // axios 基本语法
@@ -16,6 +22,7 @@ import App from './App.vue'
 
 import router from './router'
 import store from './store'
+import { setupStore } from './store'
 
 const app = createApp(App)
 
@@ -24,14 +31,18 @@ const app = createApp(App)
 app.use(globalRegister)
 
 app.use(store)
+setupStore()
 app.use(router)
 // app.use(ElementPlus)
+// 引入全局element plus icon
+// app.component('edit', Edit)
 app.mount('#app')
 
 // 方式三 区分环境变量
-console.log(process.env.VUE_APP_BASE_URL)
-console.log(process.env.VUE_APP_BASE_NAME)
+// console.log(process.env.VUE_APP_BASE_URL)
+// console.log(process.env.VUE_APP_BASE_NAME)
 
+// 封装axios
 // czmRequest.request({
 //   url: '/home/multidata',
 //   method: 'GET',
@@ -47,21 +58,21 @@ console.log(process.env.VUE_APP_BASE_NAME)
 //   }
 // })
 
-interface DataType {
-  data: any
-  returnCode: string
-  success: boolean
-}
+// interface DataType {
+//   data: any
+//   returnCode: string
+//   success: boolean
+// }
 
-czmRequest
-  .request<DataType>({
-    url: '/home/multidata',
-    method: 'GET'
-    // 是否显示Loading,默认是有Loading
-    // showLoading: false
-  })
-  .then((res) => {
-    console.log(res.data)
-    console.log(res.returnCode)
-    console.log(res.success)
-  })
+// czmRequest
+//   .request<DataType>({
+//     url: '/home/multidata',
+//     method: 'GET'
+//     // 是否显示Loading,默认是有Loading
+//     // showLoading: false
+//   })
+//   .then((res) => {
+//     console.log(res.data)
+//     console.log(res.returnCode)
+//     console.log(res.success)
+//   })

@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
+import LocalCache from '../utils/cache'
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/main'
   },
   {
     // 登录页面
@@ -26,4 +28,12 @@ const router = createRouter({
   routes
 })
 
+router.beforeEach((to) => {
+  if (to.path !== '/login') {
+    const token = LocalCache.getCache('token')
+    if (!token) {
+      return '/login'
+    }
+  }
+})
 export default router
