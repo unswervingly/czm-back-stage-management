@@ -11,11 +11,16 @@
                 <el-input
                   :placeholder="item.placeholder"
                   :show-password="item.type === 'password'"
+                  v-model="formData[`${item.field}`]"
                 />
               </template>
 
               <template v-if="item.type === 'select'">
-                <el-select :placeholder="item.placeholder" style="width: 100%">
+                <el-select
+                  :placeholder="item.placeholder"
+                  style="width: 100%"
+                  v-model="formData[`${item.field}`]"
+                >
                   <el-option
                     v-for="option in item.options"
                     :key="option.value"
@@ -30,6 +35,7 @@
                 <el-date-picker
                   v-bind="item.otherOptions"
                   style="width: 100%"
+                  v-model="formData[`${item.field}`]"
                 ></el-date-picker>
               </template>
             </el-form-item>
@@ -41,11 +47,23 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, ref, watch } from 'vue'
 import { IFormItem } from '../types/index'
 
 export default defineComponent({
   props: {
+    // 1.可以双向绑定数据，但是违反了单向数据流
+    /* formData: {
+      type: Object,
+      required: true
+    }, */
+
+    // 2.在组件中使用v-model 来实现
+    modelValue: {
+      type: Object,
+      required: true
+    },
+
     // 传入的参数和类型
     formItems: {
       type: Array as PropType<IFormItem[]>,
@@ -78,8 +96,19 @@ export default defineComponent({
       }
     }
   },
-  setup() {
-    return {}
+  setup(props, { emit }) {
+    // 2.在组件中使用v-model 来实现
+    // ref({...props.modelValue}) 把数据重新拷贝
+    const formData = ref({ ...props.modelValue })
+
+    watch(formData, (newValue) => emit('update:modelValue', newValue), {
+      // 加上deep: true，才可以侦听外面formData里面的数据
+      deep: true
+    })
+
+    return {
+      formData
+    }
   }
 })
 </script>

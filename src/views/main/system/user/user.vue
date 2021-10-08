@@ -1,19 +1,25 @@
 <template>
   <div class="user">
     <div class="search">
+      <!-- 所有属性一个一个定义的 -->
       <!-- <czm-form
         :formItems="formItems"
         :labelWidth="labelWidth"
         :itemStyle="itemStyle"
         :colLayout="colLayout"
       /> -->
-      <czm-form v-bind="searchFormConfig" />
+
+      <!-- 所有属性整合一起 + 双向绑定-->
+      <!-- <czm-form v-bind="searchFormConfig" :formData="formData" /> -->
+
+      <!-- 所有属性整合一起 + v-model的使用可以避免违反了单向数据流-->
+      <czm-form v-bind="searchFormConfig" v-model="formData" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 import { CzmForm } from '../../../../base-ui/form/index'
 import { searchFormConfig } from './config/search.config'
 
@@ -67,19 +73,38 @@ export default defineComponent({
     ] */
 
     // label宽度
-    // const labelWidth = '120px'
+    /* const labelWidth = '120px' */
 
     // 样式
-    // const itemStyle = {
-    //   padding: '20px 60px'
-    // }
+    /* const itemStyle = {
+      padding: '20px 60px'
+    } */
 
     // 响应式布局
-    // const colLayout = {
-    //   span: 8
-    // }
+    /* const colLayout = {
+      span: 8
+    } */
 
     // 把上面都整合到一起 到search.config.ts文件中
+
+    // 双向绑定的功能
+    // 1. 使用reactive，再使用v-model有弊端
+    /* const formData = reactive({
+      id: '',
+      name: '',
+      password: '',
+      sport: '',
+      createTime: ''
+    }) */
+
+    // 2. 使用ref，使用v-model
+    const formData = ref({
+      id: '',
+      name: '',
+      password: '',
+      sport: '',
+      createTime: ''
+    })
 
     return {
       // formItems,
@@ -87,7 +112,8 @@ export default defineComponent({
       // itemStyle,
       // colLayout
 
-      searchFormConfig
+      searchFormConfig,
+      formData
     }
   }
 })
