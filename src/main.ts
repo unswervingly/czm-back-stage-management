@@ -31,7 +31,9 @@ const app = createApp(App)
 app.use(globalRegister)
 
 app.use(store)
+// setupStore() 要放到app.use(router)前面
 setupStore()
+
 app.use(router)
 // app.use(ElementPlus)
 // 引入全局element plus icon

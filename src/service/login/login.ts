@@ -23,6 +23,7 @@ export function requestUserInfoById(id: number) {
   })
 }
 
+// 3.请求用户菜单
 export function requestUserMenusByRoleId(id: number) {
   return czmRequest.get<IDataType>({
     url: LoginAPI.UserMenus + id + '/menu',

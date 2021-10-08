@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 
 import LocalCache from '../utils/cache'
+import { firstMenu } from '../utils/map-menus'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -20,6 +21,14 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Main',
     component: () =>
       import(/* webpackChunkName: "main" */ '../views/main/main.vue')
+    // children: [] -> 根据userMenu来决定的
+  },
+  {
+    // 没有找到的页面
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () =>
+      import(/* webpackChunkName: "main" */ '../views/not-found/not-found.vue')
   }
 ]
 
@@ -35,5 +44,11 @@ router.beforeEach((to) => {
       return '/login'
     }
   }
+
+  // 对main进行重定向
+  if (to.path === '/main') {
+    return firstMenu.url
+  }
 })
+
 export default router

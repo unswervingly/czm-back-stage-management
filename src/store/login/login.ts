@@ -1,6 +1,7 @@
 import { Module } from 'vuex'
 
 import LocalCache from '../../utils/cache'
+import { mapMenuToRoutes } from '../../utils/map-menus'
 import router from '../../router/index'
 
 // 登录数据请求
@@ -39,6 +40,15 @@ const loginModule: Module<ILoginState, IRootState> = {
     },
     changeUserMenus(state, userMenus: any) {
       state.userMenus = userMenus
+
+      // 1.把userMenus 映射到 routes
+      const routes = mapMenuToRoutes(userMenus)
+      console.log(routes)
+
+      // 2.将 routes 添加到 router.main.children 里面
+      routes.forEach((route) => {
+        router.addRoute('Main', route)
+      })
     }
   },
   actions: {
