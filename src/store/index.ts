@@ -2,10 +2,11 @@ import { createStore, Store, useStore as useVuexStore } from 'vuex'
 
 // 导入login的 模块
 import loginModule from './login/login'
+// 导入main中system的 模块
+import systemModule from './main/system/system'
 
 // 根 store 的类型定义
 import { IRootState, IStoreType } from './type'
-
 /* interface IRootState {
   name: string
   age: number
@@ -21,7 +22,8 @@ const store = createStore<IRootState>({
   mutations: {},
   actions: {},
   modules: {
-    login: loginModule
+    login: loginModule,
+    system: systemModule
   }
 })
 

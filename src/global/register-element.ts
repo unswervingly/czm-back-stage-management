@@ -30,7 +30,10 @@ import {
   ElSelect,
   ElDatePicker,
   ElBreadcrumb,
-  ElBreadcrumbItem
+  ElBreadcrumbItem,
+  ElTable,
+  ElTableColumn,
+  ElPagination
 } from 'element-plus'
 // element-plus icon局部引入
 // 1.要安装 npm install @element-plus/icons
@@ -67,7 +70,10 @@ const components = [
   ElOption,
   ElDatePicker,
   ElBreadcrumb,
-  ElBreadcrumbItem
+  ElBreadcrumbItem,
+  ElTable,
+  ElTableColumn,
+  ElPagination
 ]
 
 export default function (app: App): void {

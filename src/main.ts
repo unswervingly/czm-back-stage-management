@@ -10,13 +10,13 @@ import './assets/css/index.less'
 // 引入全局样式
 import 'element-plus/dist/index.css'
 
-// 2.element-plus 局部引入
+// 2.element-plus 局部引入, 封装到global中
 import { globalRegister } from './global'
 
 // axios 基本语法
 // import './service/axios_demo'
-// axios 封装使用
-import czmRequest from './service/index'
+// axios 封装后使用
+// import czmRequest from './service/index'
 
 import App from './App.vue'
 
@@ -26,7 +26,7 @@ import { setupStore } from './store'
 
 const app = createApp(App)
 
-// element-plus 局部引入
+// element-plus 局部引入，封装到global中
 // globalRegister(app)
 app.use(globalRegister)
 
@@ -38,13 +38,17 @@ app.use(router)
 // app.use(ElementPlus)
 // 引入全局element plus icon
 // app.component('edit', Edit)
+
+// 添加全局 $filters函数,封装到global中
+// app.config.globalProperties.$filters = {}
+
 app.mount('#app')
 
-// 方式三 区分环境变量
+/* 方式三: 区分环境变量 */
 // console.log(process.env.VUE_APP_BASE_URL)
 // console.log(process.env.VUE_APP_BASE_NAME)
 
-// 封装axios
+/* 封装axios */
 // czmRequest.request({
 //   url: '/home/multidata',
 //   method: 'GET',
