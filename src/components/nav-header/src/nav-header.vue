@@ -22,7 +22,7 @@ import { useRoute } from 'vue-router'
 import { useStore } from '../../../store/index'
 
 import NavUserInfo from './nav-user-info.vue'
-import { CzmBreadcrumb, IBreadcrumb } from '../../../base-ui/breadcrumb/index'
+import { CzmBreadcrumb } from '../../../base-ui/breadcrumb/index'
 
 import { pathMapBreadcrumbs } from '../../../utils/map-menus'
 

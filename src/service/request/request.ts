@@ -1,8 +1,9 @@
 import axios from 'axios'
 import type { AxiosInstance } from 'axios'
-import type { CZMRequestInterceptors, CZMRequestConfig } from './type'
 import { ElLoading } from 'element-plus'
+
 import { ILoadingInstance } from 'element-plus/lib/components/loading/src/loading.type'
+import type { CZMRequestInterceptors, CZMRequestConfig } from './type'
 
 const DEFAULT_LOADING = true
 

@@ -12,6 +12,7 @@
             <span style="vertical-align: middle"> 账号登录</span>
           </span>
         </template>
+
         <login-account ref="accountRef" />
       </el-tab-pane>
 
@@ -24,6 +25,7 @@
             <span style="vertical-align: middle"> 手机登录</span>
           </span>
         </template>
+
         <login-phone ref="phonetRef" />
       </el-tab-pane>
     </el-tabs>

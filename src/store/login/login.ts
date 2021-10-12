@@ -10,9 +10,9 @@ import {
   requestUserInfoById,
   requestUserMenusByRoleId
 } from '../../service/login/login'
+
 // 登录逻辑传入参数payload的类型
 import { IAccount } from '../../service/login/type'
-
 // 根的 store 的类型定义
 import { IRootState } from '../type'
 // login的 store 的类型定义

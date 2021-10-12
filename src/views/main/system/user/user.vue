@@ -25,21 +25,31 @@
         </template>
       </czm-form>
       -->
-    <page-search :searchFormConfig="searchFormConfig" />
+    <page-search
+      :searchFormConfig="searchFormConfig"
+      @resetBtnClick="handleResetClick"
+      @queryBtnClick="handleQueryClick"
+    />
 
     <!-- 使用表格 展示内容 -->
-    <page-content :contentTableConfig="contentTableConfig" pageName="users" />
+    <page-content
+      :contentTableConfig="contentTableConfig"
+      pageName="users"
+      ref="pageContentRef"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
 
 import { PageSearch } from '../../../../components/page-search/index'
 import { PageContent } from '../../../../components/page-content/index'
+
+import { usePageSearch } from '../../../../hooks/usePageSearch'
 
 export default defineComponent({
   name: 'users',
@@ -48,9 +58,16 @@ export default defineComponent({
     PageContent
   },
   setup() {
+    const { pageContentRef, handleResetClick, handleQueryClick } =
+      usePageSearch()
+
     return {
       searchFormConfig,
-      contentTableConfig
+      contentTableConfig,
+
+      pageContentRef,
+      handleResetClick,
+      handleQueryClick
     }
   }
 })

@@ -3,8 +3,10 @@ import { createApp } from 'vue'
 // 让不同的浏览器在渲染网页元素的时候形式更统一。
 import 'normalize.css'
 import './assets/css/index.less'
+
 // 1.element-plus 全局引入
 // import ElementPlus from 'element-plus'
+
 // 引入全局element plus icon
 // import { Edit } from '@element-plus/icons'
 // 引入全局样式
