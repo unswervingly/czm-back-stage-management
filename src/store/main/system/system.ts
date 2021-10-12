@@ -12,8 +12,13 @@ const systemModule: Module<ISystemState, IRootState> = {
     return {
       usersList: [],
       usersCount: 0,
+
       roleList: [],
       roleCount: 0,
+
+      menuList: [],
+      menuCount: 0,
+
       goodsList: [],
       goodsCount: 0
     }
@@ -53,6 +58,14 @@ const systemModule: Module<ISystemState, IRootState> = {
     },
     changeRoleCount(state, roleCount: number) {
       state.roleCount = roleCount
+    },
+
+    // menu 把请求的数据添加到state中
+    changeMenuList(state, menuList: any[]) {
+      state.menuList = menuList
+    },
+    changeMenuCount(state, menuCount: number) {
+      state.menuCount = menuCount
     },
 
     // goods 把请求的数据添加到state中

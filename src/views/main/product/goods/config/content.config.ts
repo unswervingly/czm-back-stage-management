@@ -22,7 +22,7 @@ export const contentTableConfig = {
   ],
 
   // 显示表格的头部名称
-  title: '用户列表',
+  title: '商品信息',
 
   // 是否显示表格的序号
   showIndexColumn: true,

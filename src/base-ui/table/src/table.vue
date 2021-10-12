@@ -16,6 +16,7 @@
       border
       style="width: 100%"
       @selection-change="handleSelectionChange"
+      v-bind="childrenProps"
     >
       <!-- 表格的多选框 点击会触发el-table的@selection-change事件-->
       <el-table-column
@@ -47,7 +48,7 @@
     </el-table>
 
     <!-- 表格底部信息 -->
-    <div class="footer">
+    <div class="footer" v-if="showFooter">
       <slot name="footer-headler">
         <el-pagination
           :current-page="currentPage.currentPage"
@@ -70,33 +71,50 @@ import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'CzmTable',
   props: {
+    // 展示该页面的名称 即侧边栏的名称
     title: {
       type: String,
       default: ''
     },
+    // 从vuex的 system中获取数据
     listData: {
       type: Array,
       required: true
     },
+    // 从vuex的 system中获取数据的数量
     listCount: {
       type: Number,
       default: 0
     },
+    // 控制分页器数据显示几条和页数
     currentPage: {
       type: Object,
       default: () => ({ currentPage: 0, pageSize: 10 })
     },
+    // 展示的是表格头部信息
     propList: {
       type: Array,
       required: true
     },
+    // 是否显示序号
     showIndexColumn: {
       type: Boolean,
       default: false
     },
+    // 是否显示多选框
     showSelectColumn: {
       type: Boolean,
       default: false
+    },
+    // el-table两个控制 展示的数据是展开
+    childrenProps: {
+      type: Object,
+      default: () => ({})
+    },
+    // 分页器是否显示
+    showFooter: {
+      type: Boolean,
+      default: true
     }
   },
   emits: ['selectionChange', 'update:currentPage'],
