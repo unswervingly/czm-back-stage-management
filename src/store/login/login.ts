@@ -1,7 +1,7 @@
 import { Module } from 'vuex'
 
 import LocalCache from '../../utils/cache'
-import { mapMenuToRoutes } from '../../utils/map-menus'
+import { mapMenuToRoutes, mapMenusToPermissions } from '../../utils/map-menus'
 import router from '../../router/index'
 
 // 登录数据请求
@@ -28,7 +28,8 @@ const loginModule: Module<ILoginState, IRootState> = {
     return {
       token: '',
       userInfo: {},
-      userMenus: []
+      userMenus: [],
+      permissions: []
     }
   },
   mutations: {
@@ -43,12 +44,16 @@ const loginModule: Module<ILoginState, IRootState> = {
 
       // 1.把userMenus 映射到 routes
       const routes = mapMenuToRoutes(userMenus)
-      console.log(routes)
+      console.log('注册动态路由', routes)
 
       // 2.将 routes 添加到 router.main.children 里面
       routes.forEach((route) => {
         router.addRoute('Main', route)
       })
+
+      // 获取用户按钮的权限
+      const permissions = mapMenusToPermissions(userMenus)
+      state.permissions = permissions
     }
   },
   actions: {

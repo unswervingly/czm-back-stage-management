@@ -8,7 +8,9 @@
     >
       <!-- 1.header中的插槽 -->
       <template #header-headler>
-        <el-button size="medium" type="primary">新建用户</el-button>
+        <el-button v-if="isCreate" size="medium" type="primary"
+          >新建用户</el-button
+        >
       </template>
 
       <!-- 2.列中的插槽 -->
@@ -29,10 +31,19 @@
       </template>
       <template #handler>
         <div class="handler-btns">
-          <el-button icon="el-icon-edit" class="" size="mini" type="text"
+          <el-button
+            v-if="isUpdata"
+            icon="el-icon-edit"
+            class=""
+            size="mini"
+            type="text"
             >编辑</el-button
           >
-          <el-button icon="el-icon-delete" size="mini" type="text"
+          <el-button
+            v-if="isDelete"
+            icon="el-icon-delete"
+            size="mini"
+            type="text"
             >删除</el-button
           >
         </div>
@@ -61,6 +72,8 @@ import { useStore } from '../../../store/index'
 
 import { CzmTable } from '../../../base-ui/table/index'
 
+import { usePermission } from '../../../hooks/usePermission'
+
 export default defineComponent({
   name: 'PageContent',
   components: {
@@ -79,13 +92,25 @@ export default defineComponent({
   setup(props) {
     const store = useStore()
 
-    // 1.分页操作  双向绑定pageInfo  currentPage是第几个页 pageSize是请求数据数量
+    // 1.获取操作的权限
+    // 创建权限
+    const isCreate = usePermission(props.pageName, 'create')
+    // 编辑权限
+    const isUpdata = usePermission(props.pageName, 'updata ')
+    // 删除权限
+    const isDelete = usePermission(props.pageName, 'delete')
+    // 查询权限
+    const isQuery = usePermission(props.pageName, 'query')
+
+    // 2.分页操作  双向绑定pageInfo  currentPage是第几个页 pageSize是请求数据数量
     const pageInfo = ref({ currentPage: 0, pageSize: 10 })
     // 根据watch 来监听pageInfo是否改变，重新调用网络请求
     watch(pageInfo, () => getPageData())
 
-    // 2.发送网络请求
+    // 3.发送网络请求
     const getPageData = (queryInfo: any = {}) => {
+      if (!isQuery) return
+
       store.dispatch('system/getPageListAction', {
         pageUrl: props.pageName,
         queryInfo: {
@@ -97,7 +122,7 @@ export default defineComponent({
     }
     getPageData()
 
-    // 3.从vuex中获取数据
+    // 4.从vuex中获取数据
     const dataList = computed(() =>
       store.getters['system/pageListData'](props.pageName)
     )
@@ -107,7 +132,7 @@ export default defineComponent({
       store.getters['system/pageListCount'](props.pageName)
     )
 
-    // 4.从配置文件content.config.ts中 获取其他的动态插槽名称
+    // 5.从配置文件content.config.ts中 获取其他的动态插槽名称
     const otherPropSlots = props.contentTableConfig?.propList.filter(
       (item: any) => {
         if (item.slotName === 'status') return false
@@ -119,6 +144,10 @@ export default defineComponent({
     )
 
     return {
+      isCreate,
+      isUpdata,
+      isDelete,
+
       getPageData,
       dataList,
 

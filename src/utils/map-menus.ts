@@ -24,7 +24,7 @@ export function mapMenuToRoutes(useMenus: any[]): RouteRecordRaw[] {
   // type === 1 -> children -> type === 2 -> url -> route
   // type === 2 -> url -> route
 
-  // 递归获取需要的route
+  // 递归 获取需要的route
   const _recurseGetRoute = (menus: any[]) => {
     for (const menu of menus) {
       if (menu.type === 2) {
@@ -44,38 +44,38 @@ export function mapMenuToRoutes(useMenus: any[]): RouteRecordRaw[] {
 
 // 笨办法
 // // 根据路径和menu.type === 2/1 获取到Menu，放到面包屑上
-// export function pathMapBreadcrumbs(useMenus: any[], currentPath: string): any {
-//   const breadcrumbs: IBreadcrumb[] = []
+/* export function pathMapBreadcrumbs(useMenus: any[], currentPath: string): any {
+  const breadcrumbs: IBreadcrumb[] = []
 
-//   for (const menu of useMenus) {
-//     if (menu.type === 1) {
-//       const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
-//       if (findMenu) {
-//         breadcrumbs.push({ name: menu.name })
-//         breadcrumbs.push({ name: findMenu.name })
-//         return findMenu
-//       }
-//     } else if (menu.type === 2 && menu.url === currentPath) {
-//       return menu
-//     }
-//   }
+  for (const menu of useMenus) {
+    if (menu.type === 1) {
+      const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
+      if (findMenu) {
+        breadcrumbs.push({ name: menu.name })
+        breadcrumbs.push({ name: findMenu.name })
+        return findMenu
+      }
+    } else if (menu.type === 2 && menu.url === currentPath) {
+      return menu
+    }
+  }
 
-//   return breadcrumbs
-// }
+  return breadcrumbs
+} */
 
 // // 根据路径和menu.type === 2获取到Menu
-// export function pathMapToMenu(useMenus: any[], currentPath: string): any {
-//   for (const menu of useMenus) {
-//     if (menu.type === 1) {
-//       const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
-//       if (findMenu) return findMenu
-//     } else if (menu.type === 2 && menu.url === currentPath) {
-//       return menu
-//     }
-//   }
-// }
+/* export function pathMapToMenu(useMenus: any[], currentPath: string): any {
+  for (const menu of useMenus) {
+    if (menu.type === 1) {
+      const findMenu = pathMapToMenu(menu.children ?? [], currentPath)
+      if (findMenu) return findMenu
+    } else if (menu.type === 2 && menu.url === currentPath) {
+      return menu
+    }
+  }
+} */
 
-// 秒办法
+// 妙办法
 // 根据路径和menu.type === 2/1 获取到Menu，放到面包屑上
 export function pathMapBreadcrumbs(useMenus: any[], currentPath: string): any {
   const breadcrumbs: IBreadcrumb[] = []
@@ -103,4 +103,23 @@ export function pathMapToMenu(
       return menu
     }
   }
+}
+
+// 获取Menus 中的按钮权限
+export function mapMenusToPermissions(useMenus: any[]) {
+  const permissions: string[] = []
+
+  // 递归
+  const _recurseGetPermission = (menus: any[]) => {
+    for (const menu of menus) {
+      if (menu.type === 1 || menu.type === 2) {
+        _recurseGetPermission(menu.children ?? [])
+      } else if (menu.type === 3) {
+        permissions.push(menu.permission)
+      }
+    }
+  }
+  _recurseGetPermission(useMenus)
+
+  return permissions
 }
