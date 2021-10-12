@@ -34,7 +34,7 @@
       ></el-table-column>
       <!-- 表格的其他属性 -->
       <template v-for="propItem in propList" :key="propItem.prop">
-        <el-table-column v-bind="propItem" align="center">
+        <el-table-column v-bind="propItem" align="center" show-overflow-tooltip>
           <template #default="scope">
             <!-- 使用作用域插槽，实现我们想要哪个列数据的变换 -->
             <slot :name="propItem.slotName" :row="scope.row">
@@ -50,7 +50,7 @@
     <div class="footer">
       <slot name="footer-headler">
         <el-pagination
-          v-model:currentPage="currentPage.currentPage"
+          :current-page="currentPage.currentPage"
           :page-sizes="[10, 20, 30, 40]"
           :page-size="currentPage.pageSize"
           layout="total, sizes, prev, pager, next, jumper"

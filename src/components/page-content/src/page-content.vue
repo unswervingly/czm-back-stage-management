@@ -12,6 +12,7 @@
       </template>
 
       <!-- 2.列中的插槽 -->
+      <!-- 下面是四个插槽是全部页面都有，所以不用动态设置 -->
       <template #status="scope">
         <el-button
           plain
@@ -20,15 +21,12 @@
           >{{ scope.row.enable ? '启用' : '禁用' }}</el-button
         >
       </template>
-
       <template #createAt="scope">
         <span>{{ $filters.formatTime(scope.row.createAt) }}</span>
       </template>
-
       <template #updateAt="scope">
         <span>{{ $filters.formatTime(scope.row.updateAt) }}</span>
       </template>
-
       <template #handler>
         <div class="handler-btns">
           <el-button icon="el-icon-edit" class="" size="mini" type="text"
@@ -38,6 +36,18 @@
             >删除</el-button
           >
         </div>
+      </template>
+
+      <!-- 比如 goods特有的插槽 所有要放到goods组件里面，不能在这里使用-->
+      <!-- 我们可以动态创建插槽来接受外面的插槽，进而传递到table.vue中的插槽 -->
+      <template
+        v-for="item in otherPropSlots"
+        :key="item.prop"
+        #[item.slotName]="scope"
+      >
+        <template v-if="item.slotName">
+          <slot :name="item.slotName" :row="scope.row"></slot>
+        </template>
       </template>
 
       <!-- 3.footer中的插槽 -->
@@ -69,7 +79,12 @@ export default defineComponent({
   setup(props) {
     const store = useStore()
 
-    // 发送网络请求
+    // 1.分页操作  双向绑定pageInfo  currentPage是第几个页 pageSize是请求数据数量
+    const pageInfo = ref({ currentPage: 0, pageSize: 10 })
+    // 根据watch 来监听pageInfo是否改变，重新调用网络请求
+    watch(pageInfo, () => getPageData())
+
+    // 2.发送网络请求
     const getPageData = (queryInfo: any = {}) => {
       store.dispatch('system/getPageListAction', {
         pageUrl: props.pageName,
@@ -82,19 +97,25 @@ export default defineComponent({
     }
     getPageData()
 
-    // 从vuex中获取数据
+    // 3.从vuex中获取数据
     const dataList = computed(() =>
       store.getters['system/pageListData'](props.pageName)
     )
 
-    // 分页操作  双向绑定pageInfo  currentPage是第几个页 pageSize是请求数据数量
-    const pageInfo = ref({ currentPage: 0, pageSize: 10 })
-    // 根据watch 来监听pageInfo是否改变，重新调用网络请求
-    watch(pageInfo, () => getPageData())
-
     // 从vuex中获取数据的数量
     const dataCount = computed(() =>
       store.getters['system/pageListCount'](props.pageName)
+    )
+
+    // 4.从配置文件content.config.ts中 获取其他的动态插槽名称
+    const otherPropSlots = props.contentTableConfig?.propList.filter(
+      (item: any) => {
+        if (item.slotName === 'status') return false
+        if (item.slotName === 'createAt') return false
+        if (item.slotName === 'updateAt') return false
+        if (item.slotName === 'handler') return false
+        return true
+      }
     )
 
     return {
@@ -102,7 +123,9 @@ export default defineComponent({
       dataList,
 
       pageInfo,
-      dataCount
+      dataCount,
+
+      otherPropSlots
     }
   }
 })
