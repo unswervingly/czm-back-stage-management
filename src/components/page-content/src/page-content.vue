@@ -1,6 +1,11 @@
 <template>
   <div class="page-content">
-    <czm-table :listData="dataList" v-bind="contentTableConfig">
+    <czm-table
+      :listData="dataList"
+      :listCount="dataCount"
+      v-bind="contentTableConfig"
+      v-model:currentPage="pageInfo"
+    >
       <!-- 1.header中的插槽 -->
       <template #header-headler>
         <el-button size="medium" type="primary">新建用户</el-button>
@@ -41,7 +46,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref, watch } from 'vue'
 import { useStore } from '../../../store/index'
 
 import { CzmTable } from '../../../base-ui/table/index'
@@ -69,8 +74,8 @@ export default defineComponent({
       store.dispatch('system/getPageListAction', {
         pageUrl: props.pageName,
         queryInfo: {
-          offset: 0,
-          size: 10,
+          offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+          size: pageInfo.value.pageSize,
           ...queryInfo
         }
       })
@@ -82,9 +87,22 @@ export default defineComponent({
       store.getters['system/pageListData'](props.pageName)
     )
 
+    // 分页操作  双向绑定pageInfo  currentPage是第几个页 pageSize是请求数据数量
+    const pageInfo = ref({ currentPage: 0, pageSize: 10 })
+    // 根据watch 来监听pageInfo是否改变，重新调用网络请求
+    watch(pageInfo, () => getPageData())
+
+    // 从vuex中获取数据的数量
+    const dataCount = computed(() =>
+      store.getters['system/pageListCount'](props.pageName)
+    )
+
     return {
       getPageData,
-      dataList
+      dataList,
+
+      pageInfo,
+      dataCount
     }
   }
 })

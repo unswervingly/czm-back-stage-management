@@ -50,11 +50,11 @@
     <div class="footer">
       <slot name="footer-headler">
         <el-pagination
-          v-model:currentPage="currentPage4"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
+          v-model:currentPage="currentPage.currentPage"
+          :page-sizes="[10, 20, 30, 40]"
+          :page-size="currentPage.pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :total="listCount"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         >
@@ -78,6 +78,14 @@ export default defineComponent({
       type: Array,
       required: true
     },
+    listCount: {
+      type: Number,
+      default: 0
+    },
+    currentPage: {
+      type: Object,
+      default: () => ({ currentPage: 0, pageSize: 10 })
+    },
     propList: {
       type: Array,
       required: true
@@ -91,17 +99,27 @@ export default defineComponent({
       default: false
     }
   },
-  emits: ['selectionChange'],
+  emits: ['selectionChange', 'update:currentPage'],
   setup(props, { emit }) {
     // 点击多选框 会触发el-table的@selection-change事件
     const handleSelectionChange = (value: any) => {
-      console.log(value)
-
+      console.log('点击多选框', value)
       emit('selectionChange', value)
     }
 
+    // 会触发el-pagination事件
+    const handleSizeChange = (pageSize: number) => {
+      console.log('点击分页', pageSize)
+      emit('update:currentPage', { ...props.currentPage, pageSize })
+    }
+    const handleCurrentChange = (currentPage: number) => {
+      emit('update:currentPage', { ...props.currentPage, currentPage })
+    }
+
     return {
-      handleSelectionChange
+      handleSelectionChange,
+      handleSizeChange,
+      handleCurrentChange
     }
   }
 })

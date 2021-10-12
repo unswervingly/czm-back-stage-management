@@ -17,6 +17,7 @@ const systemModule: Module<ISystemState, IRootState> = {
     }
   },
   getters: {
+    // 动态 响应式 通过getters返回是函数可以传参数pageName来判断 得到state是哪个数据
     pageListData(state) {
       return (pageName: string) => {
         return (state as any)[`${pageName}List`]
@@ -27,15 +28,24 @@ const systemModule: Module<ISystemState, IRootState> = {
         //     return state.roleList
         // }
       }
+    },
+
+    pageListCount(state) {
+      return (pageName: string) => {
+        return (state as any)[`${pageName}Count`]
+      }
     }
   },
   mutations: {
+    // user 把请求的数据添加到state中
     changeUsersList(state, usersList: any[]) {
       state.usersList = usersList
     },
     changeUsersCount(state, usersCount: number) {
       state.usersCount = usersCount
     },
+
+    // role 把请求的数据添加到state中
     changeRoleList(state, roleList: any[]) {
       state.roleList = roleList
     },
@@ -44,12 +54,13 @@ const systemModule: Module<ISystemState, IRootState> = {
     }
   },
   actions: {
+    // 根据pageName 获取到需要的页面数据
     async getPageListAction({ commit }, payload: any) {
       // 1.根据传过来的pageName 获取pageUrl
       const pageName = payload.pageUrl
       const pageUrl = `/${pageName}/list`
 
-      // 2.对页面发送请求
+      // 2.对页面发送网络请求
       const pageResult = await getPageListData(pageUrl, payload.queryInfo)
       console.log(pageResult)
 
