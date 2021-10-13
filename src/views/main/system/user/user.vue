@@ -37,6 +37,9 @@
       pageName="users"
       ref="pageContentRef"
     />
+
+    <!-- 使用弹窗组件，会有弹窗 -->
+    <page-modal :modalConfig="modalConfig"></page-modal>
   </div>
 </template>
 
@@ -45,9 +48,11 @@ import { defineComponent } from 'vue'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
+import { modalConfig } from './config/modal.config'
 
 import { PageSearch } from '../../../../components/page-search/index'
 import { PageContent } from '../../../../components/page-content/index'
+import { PageModal } from '../../../../components/page-modal/index'
 
 import { usePageSearch } from '../../../../hooks/usePageSearch'
 
@@ -55,7 +60,8 @@ export default defineComponent({
   name: 'users',
   components: {
     PageSearch,
-    PageContent
+    PageContent,
+    PageModal
   },
   setup() {
     const { pageContentRef, handleResetClick, handleQueryClick } =
@@ -67,7 +73,9 @@ export default defineComponent({
 
       pageContentRef,
       handleResetClick,
-      handleQueryClick
+      handleQueryClick,
+
+      modalConfig
     }
   }
 })

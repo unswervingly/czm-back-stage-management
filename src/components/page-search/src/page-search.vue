@@ -42,7 +42,7 @@ export default defineComponent({
   setup(props, { emit }) {
     // 2. 使用ref，使用v-model
     // 双向绑定的属性应该是由配置文件的field来决定的
-    // 1.优化一:formData中的属性应该动态来决定
+    // 1.优化一: formData中的属性应该动态来决定
     const formItems = props.searchFormConfig?.formItems ?? []
     const formOriginData: any = {}
     for (const item of formItems) {
@@ -56,6 +56,7 @@ export default defineComponent({
         createAt: ''
       } */
     }
+    // formData属性 根据配置动态设置，来实现和CzmForm组件的双向绑定
     const formData = ref(formOriginData)
 
     // 2.优化二: 当用户点击重置按钮时, 操作

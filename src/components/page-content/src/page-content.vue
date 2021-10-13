@@ -29,10 +29,10 @@
       <template #updateAt="scope">
         <span>{{ $filters.formatTime(scope.row.updateAt) }}</span>
       </template>
-      <template #handler>
+      <template #handler="scope">
         <div class="handler-btns">
           <el-button
-            v-if="isUpdata"
+            v-if="isUpdate"
             icon="el-icon-edit"
             class=""
             size="mini"
@@ -44,6 +44,7 @@
             icon="el-icon-delete"
             size="mini"
             type="text"
+            @click="handleDeleteClick(scope.row)"
             >删除</el-button
           >
         </div>
@@ -96,14 +97,14 @@ export default defineComponent({
     // 创建权限
     const isCreate = usePermission(props.pageName, 'create')
     // 编辑权限
-    const isUpdata = usePermission(props.pageName, 'updata ')
+    const isUpdate = usePermission(props.pageName, 'update')
     // 删除权限
     const isDelete = usePermission(props.pageName, 'delete')
     // 查询权限
     const isQuery = usePermission(props.pageName, 'query')
 
     // 2.分页操作  双向绑定pageInfo  currentPage是第几个页 pageSize是请求数据数量
-    const pageInfo = ref({ currentPage: 0, pageSize: 10 })
+    const pageInfo = ref({ currentPage: 1, pageSize: 10 })
     // 根据watch 来监听pageInfo是否改变，重新调用网络请求
     watch(pageInfo, () => getPageData())
 
@@ -114,7 +115,7 @@ export default defineComponent({
       store.dispatch('system/getPageListAction', {
         pageUrl: props.pageName,
         queryInfo: {
-          offset: pageInfo.value.currentPage * pageInfo.value.pageSize,
+          offset: (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
           size: pageInfo.value.pageSize,
           ...queryInfo
         }
@@ -143,9 +144,20 @@ export default defineComponent({
       }
     )
 
+    // 6.删除用户的操作
+    const handleDeleteClick = (item: any) => {
+      console.log('删除的用户', item)
+      store.dispatch('system/deletePageDataAction', {
+        pageName: props.pageName,
+        id: item.id
+      })
+    }
+
+    // 编辑用户的操作
+
     return {
       isCreate,
-      isUpdata,
+      isUpdate,
       isDelete,
 
       getPageData,
@@ -154,7 +166,9 @@ export default defineComponent({
       pageInfo,
       dataCount,
 
-      otherPropSlots
+      otherPropSlots,
+
+      handleDeleteClick
     }
   }
 })

@@ -4,7 +4,10 @@ import { IRootState } from '../../type'
 import { ISystemState } from './type'
 
 // 导入网络请求
-import { getPageListData } from '../../../service/main/system/system'
+import {
+  getPageListData,
+  deletePageData
+} from '../../../service/main/system/system'
 
 const systemModule: Module<ISystemState, IRootState> = {
   namespaced: true,
@@ -95,6 +98,30 @@ const systemModule: Module<ISystemState, IRootState> = {
 
       commit(`change${changePageName}List`, list)
       commit(`change${changePageName}Count`, totalCount)
+    },
+
+    // 根据pageName和id才能拼接上 url: /${pageName}/:id ，删除用户列表中选择的数据
+    async deletePageDataAction({ dispatch }, payload: any) {
+      // 1. 获取pageName和id 从payload中, 拼接成一个url，就可以动态获取
+      // pageName -> /users /role
+      // id -> /users/:id
+      const { pageName, id } = payload
+      console.log(pageName)
+
+      const pageUrl = `/${pageName}/${id}`
+
+      // 2.调用删除的网络请求 deletePageData
+      const pageResult = await deletePageData(pageUrl)
+      console.log(pageResult)
+
+      // 3.重新请求最新的数据 即重新加载数据
+      dispatch('getPageListAction', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
     }
   }
 }

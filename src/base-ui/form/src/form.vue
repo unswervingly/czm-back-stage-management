@@ -106,6 +106,7 @@ export default defineComponent({
   },
   setup(props, { emit }) {
     // 2.在组件中使用v-model 来实现
+    // formData 是外面v-model数据 重新拷贝后的数据
     // ref({...props.modelValue}) 把数据重新拷贝
     const formData = ref({ ...props.modelValue })
 

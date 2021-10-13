@@ -53,7 +53,7 @@ export default defineComponent({
     loginPhone
   },
   setup() {
-    // 1.定义属性
+    // 1.定义记住密码属性
     const isKeepPassword = ref(true)
     // InstanceType<typeof loginAccount> 拿到 loginAccount组件导出的类型
     const accountRef = ref<InstanceType<typeof loginAccount>>()
@@ -61,7 +61,7 @@ export default defineComponent({
     // v-model 所选选项卡的名称
     const currentTab = ref('account')
 
-    // 2.定义方法
+    // 2.定义立即登录方法
     const handleLoginClick = () => {
       if (currentTab.value === 'account') {
         accountRef.value?.loginAction(isKeepPassword.value)
