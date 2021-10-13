@@ -75,9 +75,25 @@ export default defineComponent({
     const { pageContentRef, handleResetClick, handleQueryClick } =
       usePageSearch()
 
+    // pageModal相关的hook逻辑，
+    const newCallback = () => {
+      const passwordItem = modalConfig.formItems.find(
+        (item) => item.field === 'password'
+      )
+
+      passwordItem!.isHidden = false
+    }
+    const editCallback = () => {
+      const passwordItem = modalConfig.formItems.find(
+        (item) => item.field === 'password'
+      )
+
+      passwordItem!.isHidden = true
+    }
+
     // 新建和编辑的点击是否显示弹窗，点击编辑的按钮弹窗 内容就会把我编辑的内容给到弹窗里面
     const { pageModalRef, defaultInfo, handleNewData, handleEditData } =
-      usePageModal()
+      usePageModal(newCallback, editCallback)
 
     return {
       searchFormConfig,

@@ -10,6 +10,8 @@ export interface IFormItem {
   options?: any[]
   // 针对特殊的属性
   otherOptions?: any
+  // 判断我配置文件中formItems里面是否在el-form-item显示,
+  isHidden?: boolean
 }
 
 // 整合到一起
