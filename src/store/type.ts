@@ -5,6 +5,10 @@ import { ISystemState } from './main/system/type'
 export interface IRootState {
   name: string
   age: number
+  // 所有部门数据
+  entireDepartment: any[]
+  // 所有角色数据
+  entireRole: any[]
 }
 
 // 封装useStore
