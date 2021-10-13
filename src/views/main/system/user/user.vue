@@ -36,10 +36,16 @@
       :contentTableConfig="contentTableConfig"
       pageName="users"
       ref="pageContentRef"
+      @newBtnClick="handleNewData"
+      @editBtnClick="handleEditData"
     />
 
     <!-- 使用弹窗组件，会有弹窗 -->
-    <page-modal :modalConfig="modalConfig"></page-modal>
+    <page-modal
+      :modalConfig="modalConfig"
+      ref="pageModalRef"
+      :defaultInfo="defaultInfo"
+    ></page-modal>
   </div>
 </template>
 
@@ -55,6 +61,7 @@ import { PageContent } from '../../../../components/page-content/index'
 import { PageModal } from '../../../../components/page-modal/index'
 
 import { usePageSearch } from '../../../../hooks/usePageSearch'
+import { usePageModal } from '../../../../hooks/usePageModal'
 
 export default defineComponent({
   name: 'users',
@@ -64,8 +71,13 @@ export default defineComponent({
     PageModal
   },
   setup() {
+    // 搜索和重置
     const { pageContentRef, handleResetClick, handleQueryClick } =
       usePageSearch()
+
+    // 新建和编辑的点击是否显示弹窗，点击编辑的按钮弹窗 内容就会把我编辑的内容给到弹窗里面
+    const { pageModalRef, defaultInfo, handleNewData, handleEditData } =
+      usePageModal()
 
     return {
       searchFormConfig,
@@ -75,7 +87,12 @@ export default defineComponent({
       handleResetClick,
       handleQueryClick,
 
-      modalConfig
+      modalConfig,
+
+      pageModalRef,
+      defaultInfo,
+      handleNewData,
+      handleEditData
     }
   }
 })

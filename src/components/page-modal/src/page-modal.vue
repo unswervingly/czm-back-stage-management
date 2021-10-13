@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 
 import { CzmForm } from '../../../base-ui/form/index'
 
@@ -28,14 +28,30 @@ export default defineComponent({
     modalConfig: {
       type: Object,
       required: true
+    },
+    defaultInfo: {
+      type: Object,
+      default: () => ({})
     }
   },
-  setup() {
+  setup(props) {
     // 定义dialogVisible属性 说明是否对话框可见，在el-dialog中 v-model使用来控制对话框显示隐藏
-    const dialogVisible = ref(true)
+    const dialogVisible = ref(false)
 
     // dialogFormData属性 来实现和CzmForm组件的双向绑定
-    const dialogFormData = ref({})
+    const dialogFormData = ref<any>({})
+
+    // 点击编辑之后才赋值到dialogFormData里面，使用watch侦听 defaulitInfo的变化
+    watch(
+      () => props.defaultInfo,
+      (newValue) => {
+        // 根据props.modalConfig.formItems中的配置，给dialogFormData设置
+        for (const item of props.modalConfig.formItems) {
+          dialogFormData.value[`${item.field}`] = newValue[`${item.field}`]
+        }
+      }
+    )
+
     return {
       dialogVisible,
       dialogFormData
