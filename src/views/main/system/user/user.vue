@@ -42,7 +42,7 @@
 
     <!-- 使用弹窗组件，会有弹窗 -->
     <page-modal
-      :modalConfig="modalConfig"
+      :modalConfig="modalConfigComputed"
       ref="pageModalRef"
       :defaultInfo="defaultInfo"
     ></page-modal>
@@ -50,7 +50,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { computed, defineComponent } from 'vue'
+import { useStore } from '../../../../store'
 
 import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
@@ -92,6 +93,31 @@ export default defineComponent({
       passwordItem!.isHidden = true
     }
 
+    // 2.动态添加部门和角色列表,注意 store是异步请求所以要用computed 返回更新后的配置内容
+    const store = useStore()
+    // 当数据变化时，通过computed改变并且返回modalConfig 来让页面是刷新
+    const modalConfigComputed = computed(() => {
+      // 使用find是引用modalConfig，不会是一个新的对象
+      const departmentItem = modalConfig.formItems.find(
+        (item) => item.field === 'departmentId'
+      )
+      departmentItem!.options = store.state.entireDepartment.map(
+        (departmentitem) => {
+          return { title: departmentitem.name, value: departmentitem.id }
+        }
+      )
+      const roleItem = modalConfig.formItems.find(
+        (item) => item.field === 'roleId'
+      )
+      roleItem!.options = store.state.entireRole.map((roleitem) => {
+        return { title: roleitem.name, value: roleitem.id }
+      })
+
+      // 引用不会是一个新的对象 返回更新后的配置内容
+      return modalConfig
+    })
+
+    // 3.调用hook获取公共变量和函数
     // 新建和编辑的点击是否显示弹窗，点击编辑的按钮弹窗 内容就会把我编辑的内容给到弹窗里面
     const { pageModalRef, defaultInfo, handleNewData, handleEditData } =
       usePageModal(newCallback, editCallback)
@@ -104,7 +130,8 @@ export default defineComponent({
       handleResetClick,
       handleQueryClick,
 
-      modalConfig,
+      // modalConfig,
+      modalConfigComputed,
 
       pageModalRef,
       defaultInfo,
