@@ -19,6 +19,7 @@
       <el-tree
         :data="menus"
         show-checkbox
+        ref="elTreeRef"
         node-key="id"
         :props="{ children: 'children', label: 'name' }"
         @check="handleCheckChange"
@@ -28,8 +29,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref, nextTick } from 'vue'
 import { useStore } from '../../../../store/index'
+import { ElTree } from 'element-plus'
 
 import { PageSearch } from '../../../../components/page-search/index'
 import { PageContent } from '../../../../components/page-content/index'
@@ -41,6 +43,8 @@ import { modalConfig } from './config/modal.config'
 
 import { usePageModal } from '../../../../hooks/usePageModal'
 
+import { getMenuLeafKeys } from '../../../../utils/map-menus'
+
 export default defineComponent({
   name: 'role',
   components: {
@@ -49,8 +53,20 @@ export default defineComponent({
     PageModal
   },
   setup() {
+    // 处理pageModal的hook
+    const elTreeRef = ref<InstanceType<typeof ElTree>>()
+    const editCallback = (item: any) => {
+      const leafKeys = getMenuLeafKeys(item.menuList)
+      // 调用editCallback，elTreeRef.value还没有绑定到el-tree组件对象上面,使用nextTick来解决
+      console.log(elTreeRef.value) // undefined
+      nextTick(() => {
+        console.log(elTreeRef.value)
+        elTreeRef.value?.setCheckedKeys(leafKeys, false)
+      })
+    }
+
     const { pageModalRef, defaultInfo, handleNewData, handleEditData } =
-      usePageModal()
+      usePageModal(undefined, editCallback)
 
     // 得到所有的菜单数据
     const store = useStore()
@@ -80,7 +96,8 @@ export default defineComponent({
 
       menus,
       otherInfo,
-      handleCheckChange
+      handleCheckChange,
+      elTreeRef
     }
   }
 })

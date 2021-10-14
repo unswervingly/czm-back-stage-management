@@ -2,7 +2,7 @@ import { ref } from 'vue'
 
 import { PageModal } from '../components/page-modal/index'
 
-type CallBackFn = () => void
+type CallBackFn = (item?: any) => void
 
 export function usePageModal(newCb?: CallBackFn, editCb?: CallBackFn) {
   // pageModalRef 是获取PageModal对象
@@ -25,7 +25,7 @@ export function usePageModal(newCb?: CallBackFn, editCb?: CallBackFn) {
       pageModalRef.value.dialogVisible = true
     }
 
-    editCb && editCb()
+    editCb && editCb(item)
   }
 
   return {
