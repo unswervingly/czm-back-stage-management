@@ -22,7 +22,9 @@ const store = createStore<IRootState>({
       // 所有部门数据
       entireDepartment: [],
       // 所有角色数据
-      entireRole: []
+      entireRole: [],
+      // 完整菜单数据
+      entireMenu: []
     }
   },
   mutations: {
@@ -31,6 +33,9 @@ const store = createStore<IRootState>({
     },
     changeEntireRole(state, roleList: any) {
       state.entireRole = roleList
+    },
+    changeEntireMenu(state, menuList: any) {
+      state.entireMenu = menuList
     }
   },
   actions: {
@@ -48,9 +53,17 @@ const store = createStore<IRootState>({
       })
       const { list: roleList } = roleResult.data
 
-      // 2.保存数据
+      // 请求完整菜单数据
+      const menuResult = await getPageListData('/menu/list', {
+        offset: 0,
+        size: 100
+      })
+      const { list: menuList } = menuResult.data
+
+      // 保存数据
       commit('changeEntireDepartment', departmentList)
       commit('changeEntireRole', roleList)
+      commit('changeEntireMenu', menuList)
     }
   },
   modules: {

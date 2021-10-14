@@ -9,6 +9,8 @@ export interface IRootState {
   entireDepartment: any[]
   // 所有角色数据
   entireRole: any[]
+  // 完整菜单数据
+  entireMenu: any[]
 }
 
 // 封装useStore

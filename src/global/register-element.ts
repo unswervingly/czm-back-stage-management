@@ -35,7 +35,8 @@ import {
   ElTableColumn,
   ElPagination,
   ElImage,
-  ElDialog
+  ElDialog,
+  ElTree
 } from 'element-plus'
 // element-plus icon局部引入
 // 1.要安装 npm install @element-plus/icons
@@ -77,7 +78,8 @@ const components = [
   ElTableColumn,
   ElPagination,
   ElImage,
-  ElDialog
+  ElDialog,
+  ElTree
 ]
 
 export default function (app: App): void {
