@@ -11,9 +11,9 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="dialogVisible = false"
-            >确定</el-button
-          >
+          <el-button type="primary" @click="handleConfirmClick">
+            确定
+          </el-button>
         </span>
       </template>
     </el-dialog>
@@ -22,6 +22,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch } from 'vue'
+import { useStore } from 'vuex'
 
 import { CzmForm } from '../../../base-ui/form/index'
 
@@ -38,6 +39,10 @@ export default defineComponent({
     defaultInfo: {
       type: Object,
       default: () => ({})
+    },
+    pageName: {
+      type: String,
+      require: true
     }
   },
   setup(props) {
@@ -58,9 +63,31 @@ export default defineComponent({
       }
     )
 
+    // 点击弹窗的 确定按钮的逻辑
+    const store = useStore()
+    const handleConfirmClick = () => {
+      dialogVisible.value = false
+      if (Object.keys(props.defaultInfo).length) {
+        // 编辑
+        store.dispatch('system/editPageDataAction', {
+          pageName: props.pageName,
+          editData: { ...dialogFormData.value },
+          id: props.defaultInfo.id
+        })
+      } else {
+        // 新建
+        store.dispatch('system/createPageDataAction', {
+          pageName: props.pageName,
+          newData: { ...dialogFormData.value }
+        })
+      }
+    }
+
     return {
       dialogVisible,
-      dialogFormData
+      dialogFormData,
+
+      handleConfirmClick
     }
   }
 })

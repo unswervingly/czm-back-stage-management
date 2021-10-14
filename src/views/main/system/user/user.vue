@@ -45,6 +45,7 @@
       :modalConfig="modalConfigComputed"
       ref="pageModalRef"
       :defaultInfo="defaultInfo"
+      pageName="users"
     ></page-modal>
   </div>
 </template>
@@ -93,7 +94,8 @@ export default defineComponent({
       passwordItem!.isHidden = true
     }
 
-    // 2.动态添加部门和角色列表,注意 store是异步请求所以要用computed 返回更新后的配置内容
+    // 2.动态添加部门和角色列表
+    // 注意 store是异步请求所以要用computed 返回更新后的配置内容
     const store = useStore()
     // 当数据变化时，通过computed改变并且返回modalConfig 来让页面是刷新
     const modalConfigComputed = computed(() => {

@@ -10,7 +10,7 @@ export function formatUtcString(
   format: string = DATE_TIME_FORMAT
 ) {
   // 安装dayjs库
-  return dayjs.utc(utcString).format(format)
+  return dayjs.utc(utcString).utcOffset(8).format(format)
 }
 
 // export function formatTimestamp(

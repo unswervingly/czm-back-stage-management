@@ -41,6 +41,7 @@ const store = createStore<IRootState>({
         size: 100
       })
       const { list: departmentList } = departmentResult.data
+
       const roleResult = await getPageListData('/role/list', {
         offset: 0,
         size: 100
@@ -62,8 +63,8 @@ export function setupStore() {
   // 防止页面刷新，store直接清除了
   store.dispatch('login/loadLocalLogin')
 
-  // 请求部门和角色数据
-  store.dispatch('getInitialDataAction')
+  // 请求部门和角色数据,但是当外面退出登录时没有token，就会产生bug
+  // store.dispatch('getInitialDataAction')
 }
 
 // 封装让vuex支持ts

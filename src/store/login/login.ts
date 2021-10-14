@@ -58,13 +58,16 @@ const loginModule: Module<ILoginState, IRootState> = {
   },
   actions: {
     // 账户
-    async accountLoginAction({ commit }, payload: IAccount) {
+    async accountLoginAction({ commit, dispatch }, payload: IAccount) {
       // 1.实现登录逻辑
       const loginResult = await accountLoginRequest(payload)
       console.log(loginResult)
       const { id, token } = loginResult.data
       commit('changeToken', token)
       LocalCache.setCache('token', token)
+
+      // 发送初始化的请求(完整的角色和部门信息)
+      dispatch('getInitialDataAction', null, { root: true })
 
       // 2.请求用户信息
       const userInfoResult = await requestUserInfoById(id)
@@ -87,10 +90,12 @@ const loginModule: Module<ILoginState, IRootState> = {
     },
 
     // 刷新页面，vuex数据重新加载的方法
-    loadLocalLogin({ commit }) {
+    loadLocalLogin({ commit, dispatch }) {
       const token = LocalCache.getCache('token')
       if (token) {
         commit('changeToken', token)
+        // 发送初始化的请求(完整的角色和部门信息)
+        dispatch('getInitialDataAction', null, { root: true })
       }
 
       const userInfo = LocalCache.getCache('userInfo')

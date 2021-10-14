@@ -1,4 +1,3 @@
-import { contentTableConfig } from '@/views/main/product/goods/config/content.config'
 import czmRequest from '../../index'
 
 import { IDataType } from '../../types'
@@ -16,5 +15,21 @@ export function getPageListData(url: string, queryInfo: any) {
 export function deletePageData(url: string) {
   return czmRequest.delete<IDataType>({
     url: url
+  })
+}
+
+// 3.新建用户的网络请求
+export function createPageData(url: string, newData: any) {
+  return czmRequest.post<IDataType>({
+    url: url,
+    data: newData
+  })
+}
+
+// 4.编辑用户的网络请求
+export function editPageData(url: string, editData: any) {
+  return czmRequest.patch<IDataType>({
+    url: url,
+    data: editData
   })
 }

@@ -122,7 +122,7 @@ export default defineComponent({
       if (!isQuery) return
 
       store.dispatch('system/getPageListAction', {
-        pageUrl: props.pageName,
+        pageName: props.pageName,
         queryInfo: {
           offset: (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
           size: pageInfo.value.pageSize,

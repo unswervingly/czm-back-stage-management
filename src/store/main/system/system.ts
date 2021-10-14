@@ -6,7 +6,9 @@ import { ISystemState } from './type'
 // 导入网络请求
 import {
   getPageListData,
-  deletePageData
+  deletePageData,
+  createPageData,
+  editPageData
 } from '../../../service/main/system/system'
 
 const systemModule: Module<ISystemState, IRootState> = {
@@ -83,7 +85,7 @@ const systemModule: Module<ISystemState, IRootState> = {
     // 根据pageName 获取到需要的页面数据
     async getPageListAction({ commit }, payload: any) {
       // 1.根据传过来的pageName 获取pageUrl
-      const pageName = payload.pageUrl
+      const pageName = payload.pageName
       const pageUrl = `/${pageName}/list`
 
       // 2.对页面发送网络请求
@@ -115,6 +117,42 @@ const systemModule: Module<ISystemState, IRootState> = {
       console.log(pageResult)
 
       // 3.重新请求最新的数据 即重新加载数据
+      dispatch('getPageListAction', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
+    },
+
+    // 新建用户
+    async createPageDataAction({ dispatch }, payload: any) {
+      // 1.新建数据的请求
+      const { pageName, newData } = payload
+      const pageUrl = `/${pageName}`
+      const pageResult = await createPageData(pageUrl, newData)
+      console.log(pageResult)
+
+      // 2.重新请求最新的数据 即重新加载数据
+      dispatch('getPageListAction', {
+        pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10
+        }
+      })
+    },
+
+    // 编辑用户
+    async editPageDataAction({ dispatch }, payload: any) {
+      // 1.编辑数据的请求
+      const { pageName, editData, id } = payload
+      const pageUrl = `/${pageName}/${id}`
+      const pageResult = await editPageData(pageUrl, editData)
+      console.log(pageResult)
+
+      // 2.重新请求最新的数据 即重新加载数据
       dispatch('getPageListAction', {
         pageName,
         queryInfo: {
