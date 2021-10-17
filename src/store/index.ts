@@ -4,6 +4,8 @@ import { createStore, Store, useStore as useVuexStore } from 'vuex'
 import loginModule from './login/login'
 // 导入main中system的 模块
 import systemModule from './main/system/system'
+// 导入main中analysis的 模块
+import dashboardModule from './main/analysis/dashboard'
 
 // 根 store 的类型定义
 import { IRootState, IStoreType } from './type'
@@ -68,7 +70,8 @@ const store = createStore<IRootState>({
   },
   modules: {
     login: loginModule,
-    system: systemModule
+    system: systemModule,
+    dashboard: dashboardModule
   }
 })
 
