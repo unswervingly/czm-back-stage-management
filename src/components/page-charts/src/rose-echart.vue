@@ -8,9 +8,9 @@
 import { defineProps, withDefaults, computed } from 'vue'
 import { BaseEchart } from '../../../base-ui/echarts/index'
 
-import { IDataType } from '../types/index'
+import { IPieEchartData } from '../types/index'
 
-const props = withDefaults(defineProps<{ roseData: IDataType[] }>(), {
+const props = withDefaults(defineProps<{ roseData: IPieEchartData[] }>(), {
   roseData: () => []
 })
 

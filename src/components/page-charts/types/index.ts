@@ -1,4 +1,4 @@
-export interface IDataType {
+export interface IPieEchartData {
   name: string
   value: any
 }

@@ -7,7 +7,9 @@
         </czm-card>
       </el-col>
       <el-col :span="10">
-        <czm-card title="不同城市商品销量"></czm-card>
+        <czm-card title="不同城市商品销量">
+          <map-echart :mapData="addressGoodsSale"></map-echart>
+        </czm-card>
       </el-col>
       <el-col :span="7">
         <czm-card title="分类商品数量(玫瑰图)">
@@ -40,6 +42,7 @@ import { PicEchart } from '../../../../components/page-charts/index'
 import { RoseEchart } from '../../../../components/page-charts/index'
 import { LineEchart } from '../../../../components/page-charts/index'
 import { BarEchart } from '../../../../components/page-charts/index'
+import { MapEchart } from '../../../../components/page-charts/index'
 
 export default defineComponent({
   name: 'dashboard',
@@ -48,7 +51,8 @@ export default defineComponent({
     PicEchart,
     RoseEchart,
     LineEchart,
-    BarEchart
+    BarEchart,
+    MapEchart
   },
   setup() {
     const store = useStore()
@@ -95,10 +99,18 @@ export default defineComponent({
       }
     })
 
+    // 获取state中 dashboard的addressGoodsSale 数据
+    const addressGoodsSale = computed(() => {
+      return store.state.dashboard.addressGoodsSale.map((item: any) => {
+        return { name: item.address, value: item.count }
+      })
+    })
+
     return {
       categoryGoodsCount,
       categoryGoodsSale,
-      categoryGoodsFavor
+      categoryGoodsFavor,
+      addressGoodsSale
     }
   }
 })
