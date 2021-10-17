@@ -18,6 +18,7 @@ const props = withDefaults(
     picData: () => []
   }
 )
+
 const picOption = computed(() => {
   return {
     tooltip: {
