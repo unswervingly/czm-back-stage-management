@@ -14,13 +14,13 @@ export default function (el: HTMLElement) {
   })
 
   // 有的可能不是浏览器的触发，所以要自己调用
-  const setResize = () => {
+  const updateResize = () => {
     echartInstance.resize()
   }
 
   return {
     echartInstance,
     setOptions,
-    setResize
+    updateResize
   }
 }
