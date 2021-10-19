@@ -20,7 +20,8 @@ const props = withDefaults(
 const barOptions = computed(() => {
   return {
     title: {
-      text: '支持鼠标滚动缩放'
+      text: '支持鼠标滚动缩放',
+      left: 'center'
     },
     grid: {
       bottom: '5%'

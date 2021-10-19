@@ -1,4 +1,6 @@
 export interface IDashboardState {
+  // 每个分类商品的总数
+  topPanelData: any[]
   // 每个分类商品的个数
   categoryGoodsCount: any[]
   // 每个分类商品的销量

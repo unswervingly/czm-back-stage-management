@@ -24,8 +24,14 @@ const systemModule: Module<ISystemState, IRootState> = {
       menuList: [],
       menuCount: 0,
 
+      departmentList: [],
+      departmentCount: 0,
+
       goodsList: [],
-      goodsCount: 0
+      goodsCount: 0,
+
+      categoryList: [],
+      categoryCount: 0
     }
   },
   getters: {
@@ -73,12 +79,28 @@ const systemModule: Module<ISystemState, IRootState> = {
       state.menuCount = menuCount
     },
 
+    // department 把请求的数据添加到state中
+    changeDepartmentList(state, departmentList: any[]) {
+      state.departmentList = departmentList
+    },
+    changeDepartmentCount(state, departmentCount: number) {
+      state.departmentCount = departmentCount
+    },
+
     // goods 把请求的数据添加到state中
     changeGoodsList(state, goodsList: any[]) {
       state.goodsList = goodsList
     },
     changeGoodsCount(state, goodsCount: number) {
       state.goodsCount = goodsCount
+    },
+
+    // category 把请求的数据添加到state中
+    changeCategoryList(state, categoryList: any[]) {
+      state.categoryList = categoryList
+    },
+    changeCategoryCount(state, categoryCount: number) {
+      state.categoryCount = categoryCount
     }
   },
   actions: {

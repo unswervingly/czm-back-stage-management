@@ -37,7 +37,11 @@ import {
   ElImage,
   ElDialog,
   ElTree,
-  ElCard
+  ElCard,
+  ElTooltip,
+  ElDescriptions,
+  ElDescriptionsItem,
+  ElTag
 } from 'element-plus'
 // element-plus icon局部引入
 // 1.要安装 npm install @element-plus/icons
@@ -81,7 +85,11 @@ const components = [
   ElImage,
   ElDialog,
   ElTree,
-  ElCard
+  ElCard,
+  ElTooltip,
+  ElDescriptions,
+  ElDescriptionsItem,
+  ElTag
 ]
 
 export default function (app: App): void {

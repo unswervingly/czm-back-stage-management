@@ -1,5 +1,15 @@
 <template>
   <div class="dashboard">
+    <!-- 1.顶部数据统计 -->
+    <el-row :gutter="10">
+      <template v-for="item in topPanelData" :key="item.title">
+        <el-col :md="12" :lg="6" :xl="6">
+          <statistical-panel :panelData="item"></statistical-panel>
+        </el-col>
+      </template>
+    </el-row>
+
+    <!-- 2.中间图标 -->
     <el-row :gutter="10">
       <el-col :span="7">
         <czm-card title="分类商品数量(饼图)">
@@ -18,6 +28,7 @@
       </el-col>
     </el-row>
 
+    <!-- 3.底部图标 -->
     <el-row :gutter="10" class="row">
       <el-col :span="12">
         <czm-card title="分类商品的销量">
@@ -38,16 +49,20 @@ import { defineComponent, computed } from 'vue'
 import { useStore } from '../../../../store/index'
 
 import { CzmCard } from '../../../../base-ui/card/index'
-import { PicEchart } from '../../../../components/page-charts/index'
-import { RoseEchart } from '../../../../components/page-charts/index'
-import { LineEchart } from '../../../../components/page-charts/index'
-import { BarEchart } from '../../../../components/page-charts/index'
-import { MapEchart } from '../../../../components/page-charts/index'
+import { StatisticalPanel } from '../../../../components/statistical-panel/index'
+import {
+  PicEchart,
+  RoseEchart,
+  LineEchart,
+  BarEchart,
+  MapEchart
+} from '../../../../components/page-charts/index'
 
 export default defineComponent({
   name: 'dashboard',
   components: {
     CzmCard,
+    StatisticalPanel,
     PicEchart,
     RoseEchart,
     LineEchart,
@@ -55,8 +70,12 @@ export default defineComponent({
     MapEchart
   },
   setup() {
+    // 1.发起数据统计的网络请求
     const store = useStore()
     store.dispatch('dashboard/getDashBoardDataAction')
+
+    // 2.获取顶部PanelData
+    const topPanelData = computed(() => store.state.dashboard.topPanelData)
 
     // 获取state中 dashboard的categoryGoodsCount 数据，并且改变数据格式
     const categoryGoodsCount = computed(() => {
@@ -107,6 +126,7 @@ export default defineComponent({
     })
 
     return {
+      topPanelData,
       categoryGoodsCount,
       categoryGoodsSale,
       categoryGoodsFavor,

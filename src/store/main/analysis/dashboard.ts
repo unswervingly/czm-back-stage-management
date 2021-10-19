@@ -1,6 +1,7 @@
 import { Module } from 'vuex'
 
 import {
+  getAmountList,
   getCategoryGoodsCount,
   getCategoryGoodsSale,
   getCategoryGoodsFavor,
@@ -14,6 +15,8 @@ const dashboardModule: Module<IDashboardState, IRootState> = {
   namespaced: true,
   state() {
     return {
+      // 每个分类商品的总数
+      topPanelData: [],
       // 每个分类商品的个数
       categoryGoodsCount: [],
       // 每个分类商品的销量
@@ -25,6 +28,9 @@ const dashboardModule: Module<IDashboardState, IRootState> = {
     }
   },
   mutations: {
+    changeTopPanelData(state, list) {
+      state.topPanelData = list
+    },
     changeCategoryGoodsCount(state, list) {
       state.categoryGoodsCount = list
     },
@@ -41,6 +47,9 @@ const dashboardModule: Module<IDashboardState, IRootState> = {
   actions: {
     // 实现数据可视化的模块Action
     async getDashBoardDataAction({ commit }) {
+      // 每个分类商品的总数 网络请求下来的数据
+      const resultTopPanelData = await getAmountList()
+      commit('changeTopPanelData', resultTopPanelData.data)
       // 每个分类商品的个数 网络请求下来的数据
       const categoryGoodsCountResult = await getCategoryGoodsCount()
       commit('changeCategoryGoodsCount', categoryGoodsCountResult.data)

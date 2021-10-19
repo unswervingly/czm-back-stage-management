@@ -24,5 +24,7 @@ export const modalConfig: IForm = {
   // 响应式布局
   colLayout: {
     span: 24
-  }
+  },
+
+  title: '新建角色名'
 }

@@ -1,6 +1,18 @@
 <template>
   <div class="goods">
-    <page-content :contentTableConfig="contentTableConfig" pageName="goods">
+    <page-search
+      :searchFormConfig="searchFormConfig"
+      @resetBtnClick="handleResetClick"
+      @queryBtnClick="handleQueryClick"
+    />
+
+    <page-content
+      :contentTableConfig="contentTableConfig"
+      pageName="goods"
+      ref="pageContentRef"
+      @newBtnClick="handleNewData"
+      @editBtnClick="handleEditData"
+    >
       <template #image="scope">
         <el-image
           style="width: 60px; height: 60px"
@@ -20,18 +32,31 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 
+import { PageSearch } from '../../../../components/page-search/index'
 import { PageContent } from '../../../../components/page-content/index'
 
+import { searchFormConfig } from './config/search.config'
 import { contentTableConfig } from './config/content.config'
+
+import { usePageSearch } from '../../../../hooks/usePageSearch'
 
 export default defineComponent({
   name: 'goods',
   components: {
+    PageSearch,
     PageContent
   },
   setup() {
+    const { pageContentRef, handleResetClick, handleQueryClick } =
+      usePageSearch()
+
     return {
-      contentTableConfig
+      searchFormConfig,
+      contentTableConfig,
+
+      pageContentRef,
+      handleResetClick,
+      handleQueryClick
     }
   }
 })

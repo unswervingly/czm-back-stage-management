@@ -17,7 +17,9 @@ export interface IFormItem {
 // 整合到一起
 export interface IForm {
   formItems: IFormItem[]
+  title?: string
   labelWidth?: String
   itemStyle?: any
   colLayout?: any
+  // newBtnTitle?: String
 }

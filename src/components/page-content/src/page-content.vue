@@ -14,7 +14,7 @@
           type="primary"
           @click="handleNewClick"
         >
-          新建用户
+          {{ contentTableConfig?.newBtnTitle ?? '新建数据' }}
         </el-button>
       </template>
 

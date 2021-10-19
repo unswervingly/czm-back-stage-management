@@ -9,6 +9,12 @@ export interface ISystemState {
   menuList: any[]
   menuCount: number
 
+  departmentList: any[]
+  departmentCount: number
+
   goodsList: any[]
   goodsCount: number
+
+  categoryList: any[]
+  categoryCount: number
 }

@@ -1,5 +1,11 @@
 <template>
   <div class="menu">
+    <page-search
+      :searchFormConfig="searchFormConfig"
+      @resetBtnClick="handleResetClick"
+      @queryBtnClick="handleQueryClick"
+    />
+
     <page-content
       :contentTableConfig="contentTableConfig"
       pageName="menu"

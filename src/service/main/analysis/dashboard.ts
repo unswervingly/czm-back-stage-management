@@ -1,6 +1,8 @@
 import czmRequest from '../../index'
 
 enum DashboardAPI {
+  // 每个分类商品的总数接口
+  amountList = '/goods/amount/list',
   // 每个分类商品的个数接口
   categoryGoodsCount = '/goods/category/count',
   // 每个分类商品的销量接口
@@ -9,6 +11,13 @@ enum DashboardAPI {
   categoryGoodsFavor = '/goods/category/favor',
   // 不同城市的销量接口
   addressGoodsSale = '/goods/address/sale'
+}
+
+// 每个分类商品的总数的网络请求
+export function getAmountList() {
+  return czmRequest.get({
+    url: DashboardAPI.amountList
+  })
 }
 
 // 每个分类商品的个数的网络请求

@@ -25,5 +25,8 @@ export const contentTableConfig = {
   showIndexColumn: true,
 
   // 是否显示表格的多选框
-  showSelectColumn: true
+  showSelectColumn: true,
+
+  // 点击右边的按钮的名称
+  newBtnTitle: '新建角色'
 }
