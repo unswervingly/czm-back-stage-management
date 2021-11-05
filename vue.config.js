@@ -11,9 +11,12 @@ module.exports = {
     proxy: {
       '^/api': {
         target: 'http://152.136.185.210:5000',
+        // pathRewrite  对请求路径进行重定向以匹配到正确的请求地址，
         pathRewrite: {
-          '^/api': ''
+          '^/api': '' // 发送请求时，请求路径重写：将 /api/xxx --> /xxx （去掉/api）
+          // '^/api': '/api' // 这种接口配置出来     http://XX.XX.XX.XX:5000/api/login
         },
+        // 意味着host设置成target
         changeOrigin: true
       }
     }
