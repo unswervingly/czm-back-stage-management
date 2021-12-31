@@ -18,7 +18,7 @@ export interface IFormItem {
 export interface IForm {
   formItems: IFormItem[]
   title?: string
-  labelWidth?: String
+  labelWidth?: string
   itemStyle?: any
   colLayout?: any
   // newBtnTitle?: String
